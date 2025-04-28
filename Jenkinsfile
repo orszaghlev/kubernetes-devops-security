@@ -23,7 +23,7 @@ pipeline {
             steps {
               withDockerRegistry([credentialsId: "docker-hub", url: ""]) {
                 sh "printenv"
-                sh "docker build -t orszaghlev/numeric-app:v1"
+                sh "docker build -t orszaghlev/numeric-app:v1 ."
                 sh "docker push orszaghlev/numeric-app:v1"
               }
             }

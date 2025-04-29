@@ -87,7 +87,6 @@ systemctl enable jenkins
 systemctl start jenkins
 usermod -a -G docker jenkins
 echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-setenforce 0
 systemctl restart docker
 systemctl restart jenkins
 

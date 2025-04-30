@@ -83,6 +83,15 @@
 					</outputFormats>
 				</configuration>
             </plugin>
+			<plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>6.1.6</version>
+                <configuration>
+                    <failBuildOnCVSS>9</failBuildOnCVSS>
+                    <format>ALL</format>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 

@@ -29,7 +29,7 @@ pipeline {
               }
             }
         } 
-      stage('SonarQube Analysis') {
+      stage('Static Analysis') {
           steps {
             withSonarQubeEnv('sonarqube') {
               sh "mvn clean verify sonar:sonar -Dsonar.projectKey=numeric-application -Dsonar.projectName='numeric-application'"
@@ -37,6 +37,17 @@ pipeline {
             timeout(time: 2, unit: 'MINUTES') {
               script {
                 waitForQualityGate abortPipeline: true
+              }
+            }
+          }
+        }   
+      stage('Vulnerabiliy Scan') {
+          steps {
+            sh "mvn dependency-check:check"
+            }
+            post {
+              always {
+                dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
               }
             }
           }

@@ -30,7 +30,7 @@ pipeline {
             }
           }
         }   
-      stage('Vulnerabiliy Scan') {
+      stage('Vulnerability Scan') {
           steps {
             parallel {
               "Dependency Check": {

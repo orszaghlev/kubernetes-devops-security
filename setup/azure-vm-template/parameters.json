@@ -120,7 +120,7 @@
             ]
         },
         "virtualMachineSize": {
-            "value": "Standard_D4s_v3"
+            "value": "Standard_DS3_v2"
         },
         "adminUsername": {
             "value": "devsecops"

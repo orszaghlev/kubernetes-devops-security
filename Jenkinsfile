@@ -85,6 +85,22 @@ pipeline {
               )
             }
         }  
+      stage('Integration Tests') {
+            steps {
+              script {
+                try {
+                  withKubeConfig([credentialsId: "kubeconfig"]) {
+                    sh "bash integration-test.sh"
+                  }
+                } catch (e) {
+                  witKubeConfig([credentialsId: "kubeconfig"]) {
+                    sh "kubectl -n default rollout undo deploy ${deploymentName}"
+                  }
+                  throw e
+                }
+              }
+            }
+      }
     }
 
     post {

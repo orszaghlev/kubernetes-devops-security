@@ -107,8 +107,7 @@ pipeline {
                 sh "bash zap.sh"
               }
             }
-          }
-      }
+        }
     }
 
     post {

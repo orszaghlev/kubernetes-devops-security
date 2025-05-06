@@ -1,5 +1,16 @@
+@Library('slack') _
+
 pipeline {
   agent any
+
+  environment {
+    deploymentName = "devsecops"
+    containerName = "devsecops-container"
+    serviceName = "devsecops-svc"
+    imageName = "orszaghlev/numeric-app:v1"
+    applicationURL="http://devsecops-orszaghlev.eastus.cloudapp.azure.com"
+    applicationURI="/increment/99"
+  }
 
   stages {
       stage('Build Artifact') {
@@ -108,6 +119,11 @@ pipeline {
               }
             }
         }
+      stage('Testing Slack') {
+        steps {
+          sh 'exit 0'
+        }
+      }
     }
 
     post {
@@ -117,6 +133,7 @@ pipeline {
         pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
         dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
         publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: 'owasp-zap-report', reportFiles: 'zap_report.html', reportName: 'HTML Report', reportTitles: 'OWASP ZAP Report', useWrapperFileDirectly: true])
+        sendNotifications currentBuild.result
       }
     }
 }

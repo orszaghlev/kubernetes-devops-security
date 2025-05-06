@@ -101,7 +101,7 @@ pipeline {
               }
             }
       }
-      stage('Integration Tests') {
+      stage('ZAP Report') {
             steps {
               withKubeConfig([credentialsId: "kubeconfig"]) {
                 sh "bash zap.sh"

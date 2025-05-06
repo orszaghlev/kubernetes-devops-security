@@ -104,7 +104,7 @@ pipeline {
                     sh "bash integration-test.sh"
                   }
                 } catch (e) {
-                  witKubeConfig([credentialsId: "kubeconfig"]) {
+                  withKubeConfig([credentialsId: "kubeconfig"]) {
                     sh "kubectl -n default rollout undo deploy ${deploymentName}"
                   }
                   throw e
@@ -116,6 +116,13 @@ pipeline {
             steps {
               withKubeConfig([credentialsId: "kubeconfig"]) {
                 sh "bash zap.sh"
+              }
+            }
+        }
+      stage('Promote to PROD?') {
+            steps {
+              timeout(time: 2, unit: 'DAYS') {
+                input "Do you want to approve the deployment to production environment?"
               }
             }
         }
@@ -133,7 +140,7 @@ pipeline {
         pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
         dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
         publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: 'owasp-zap-report', reportFiles: 'zap_report.html', reportName: 'HTML Report', reportTitles: 'OWASP ZAP Report', useWrapperFileDirectly: true])
-        sendNotifications currentBuild.result
+        sendNotification currentBuild.result
       }
     }
 }

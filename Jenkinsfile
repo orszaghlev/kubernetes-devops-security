@@ -1,4 +1,4 @@
-@Library('slack') _
+// @Library('slack') _
 
 pipeline {
   agent any
@@ -140,7 +140,7 @@ pipeline {
         pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
         dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
         publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: 'owasp-zap-report', reportFiles: 'zap_report.html', reportName: 'HTML Report', reportTitles: 'OWASP ZAP Report', useWrapperFileDirectly: true])
-        sendNotification currentBuild.result
+        // sendNotification currentBuild.result
       }
     }
 }

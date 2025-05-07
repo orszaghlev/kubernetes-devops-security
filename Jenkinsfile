@@ -126,6 +126,23 @@ pipeline {
               }
             }
         }
+      stage('CIS Benchmark') {
+        steps {
+              script {
+                parallel(
+                  "Master": {
+                    sh "bash cis-master.sh"
+                  },
+                  "etcd": {
+                    sh "bash cis-etcd.sh"
+                  },
+                  "Kubelet": {
+                    sh "bash cis-kubelet.sh"
+                  }
+                )
+                }
+              }
+        }
       stage('Testing Slack') {
         steps {
           sh 'exit 0'

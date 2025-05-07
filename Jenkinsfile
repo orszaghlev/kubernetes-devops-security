@@ -143,6 +143,22 @@ pipeline {
                 }
               }
         }
+      stage('Prod Deployment') {
+            steps {
+              parallel(
+                "Deployment": {
+                  withKubeConfig([credentialsId: "kubeconfig"]) {
+                    sh "kubectl -n prod apply -f k8s_PROD_deployment_service.yaml"
+                  }
+                },
+                "Rollout": {
+                  withKubeConfig([credentialsId: "kubeconfig"]) {
+                    sh "bash k8s-PROD-deployment-rollout-status.sh"
+                  }
+                }
+              )
+            }
+        }  
       stage('Testing Slack') {
         steps {
           sh 'exit 0'

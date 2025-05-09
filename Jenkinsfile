@@ -159,6 +159,22 @@ pipeline {
               )
             }
         }  
+      stage('Prod Integration Tests') {
+            steps {
+              script {
+                try {
+                  withKubeConfig([credentialsId: "kubeconfig"]) {
+                    sh "bash integration-test-prod.sh"
+                  }
+                } catch (e) {
+                  withKubeConfig([credentialsId: "kubeconfig"]) {
+                    sh "kubectl -n prod rollout undo deploy ${deploymentName}"
+                  }
+                  throw e
+                }
+              }
+            }
+      }
       stage('Testing Slack') {
         steps {
           sh 'exit 0'

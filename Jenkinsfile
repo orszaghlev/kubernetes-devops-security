@@ -1,5 +1,37 @@
 // @Library('slack') _
 
+/*
+
+import io.jenkins.blueocean.rest.impl.pipeline.PipelineNodeGraphVisitor
+import io.jenkins.blueocean.rest.impl.pipeline.FlowNodeWrapper
+import org.jenkinsci.plugins.workflow.support.steps.build.RunWrapper
+import org.jenkinsci.plugins.workflow.actions.ErrorAction
+
+@NonCPS
+List<Map> getStageResults(RunWrapper build) {
+  def visitor = new PipelineNodeGraphVisitor(build.rawBuild)
+  def stages = visitor.pipelineNodes.findAll{it.type == FlowNodeWrapper.NodeType.STAGE}
+
+  return stages.collect{stage ->
+    def errorActions = stage.getPipelineActions(ErrorAction)
+    def errors = errorActions?.collect{it.error}.unique()
+
+    return [
+      id: stage.id,
+      failedStageName: stage.displayName,
+      result: "${stage.status.result}",
+      errors: errors
+    ]
+  }
+}
+
+@NonCPS
+List<Map> getFailedStages(RunWrapper build) {
+  return getStageResults(build).findAll{it.result == 'FAILURE'}
+}
+
+*/
+
 pipeline {
   agent any
 
@@ -189,7 +221,24 @@ pipeline {
         pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
         dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
         publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: 'owasp-zap-report', reportFiles: 'zap_report.html', reportName: 'HTML Report', reportTitles: 'OWASP ZAP Report', useWrapperFileDirectly: true])
-        // sendNotification currentBuild.result
+        sendNotification currentBuild.result
+      }
+
+      success {
+        script {
+          env.failedStage = "none"
+          env.emoji = ":white_check_mark: :tada: :thumbsup_all:"
+          sendNotification currentBuild.result
+        }
+      }
+
+      failure {
+        script {
+          def failedStages = getFailedStages(currentBuild)
+          env.failedStage = failedStages.failedStageName
+          env.emoji = ":x: :red_circle: :sos:"
+          sendNotification currentBuild.result
+        }
       }
     }
 }

@@ -180,7 +180,6 @@ pipeline {
               parallel(
                 "Deployment": {
                   withKubeConfig([credentialsId: "kubeconfig"]) {
-                    sh "kubectl create ns prod"
                     sh "kubectl -n prod apply -f k8s_PROD_deployment_service.yaml"
                   }
                 },

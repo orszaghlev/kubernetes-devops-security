@@ -88,7 +88,7 @@ pipeline {
               )
             }
         }  
-      /*stage('Integration Tests') {
+      stage('Integration Tests') {
             steps {
               script {
                 try {
@@ -167,14 +167,12 @@ pipeline {
               }
             }           
       }
-      */
     }
 
     post {
       always {
         junit 'target/surefire-reports/*.xml'
         jacoco execPattern: 'target/jacoco.exec'
-        //publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, icon: '', keepAll: true, reportDir: 'owasp-zap-report', reportFiles: 'zap_report.html', reportName: 'HTML Report', reportTitles: 'OWASP ZAP Report', useWrapperFileDirectly: true])
       }
     }
 }

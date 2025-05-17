@@ -63,7 +63,7 @@ pipeline {
         } 
       stage('Static Analysis') {
           steps {
-            withSonarQubeEnv('sonarqube') {
+            withSonarQubeEnv('SonarQube') {
               sh "mvn clean verify sonar:sonar -Dsonar.projectKey=numeric-application -Dsonar.projectName='numeric-application'"
             }
             timeout(time: 2, unit: 'MINUTES') {

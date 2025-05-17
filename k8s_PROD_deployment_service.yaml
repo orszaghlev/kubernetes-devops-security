@@ -23,7 +23,7 @@ spec:
       - image: orszaghlev/numeric-app:v1
         name: devsecops-container
         volumeMounts:
-          mountPath: /tmp
+        - mountPath: /tmp
           name: vol
         securityContext:
           capabilities:

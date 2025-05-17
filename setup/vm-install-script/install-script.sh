@@ -92,5 +92,10 @@ systemctl restart jenkins
 docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 sonarqube:latest
 docker run --rm -v `pwd`:/host docker.io/aquasec/kube-bench:latest install
 kubectl create ns prod
+curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.26.0 TARGET_ARCH=x86_64 sh -
+cd istio-1.26.0
+export PATH=$PWD/bin:$PATH
+istioctl install
+kubectl create ns istio-system
 
 echo ".........----------------#################._.-.-COMPLETED-.-._.#################----------------........."

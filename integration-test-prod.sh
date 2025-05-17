@@ -2,8 +2,6 @@
 
 sleep 5s
 
-kubectl create ns istio-system
-
 PORT=$(kubectl -n istio-system get svc istio-ingressgateway -o json | jq '.spec.ports[] | select (.port == 80)' | jq .nodePort)
 
 echo $PORT 

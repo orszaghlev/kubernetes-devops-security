@@ -41,7 +41,7 @@ pipeline {
     serviceName = "devsecops-svc"
     imageName = "orszaghlev/numeric-app:v1"
     applicationURL="http://devsecops-orszaghlev.eastus.cloudapp.azure.com"
-    applicationURI="/increment/99"
+    applicationURI="increment/99"
   }
 
   stages {

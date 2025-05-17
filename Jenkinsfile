@@ -147,7 +147,9 @@ pipeline {
       stage('ZAP Report') {
             steps {
               withKubeConfig([credentialsId: "kubeconfig"]) {
-                sh "bash zap.sh"
+                withDockerRegistry([credentialsId: "docker-hub", url: ""]) {
+                  sh "bash zap.sh"
+                }
               }
             }
         }

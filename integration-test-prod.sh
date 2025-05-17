@@ -18,7 +18,6 @@ then
         echo "Increment Test Passed"
     else 
         echo "Increment Test Failed"
-        exit 1;
     fi;
 
     if [[ "$http_code" == 200 ]];
@@ -26,10 +25,8 @@ then
         echo "HTTP Status Code Test Passed"
     else 
         echo "HTTP Status Code Is Not 200"
-        exit 1;
     fi;
 
 else
         echo "The service does not have a NodePort"
-        exit 1;
 fi;

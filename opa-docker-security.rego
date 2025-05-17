@@ -18,8 +18,9 @@ deny[msg] {
     input[i].Cmd == "env"
     val := input[i].Value
     some j
-    some k
-    contains(lower(val[j]), secrets_env[k])
+    some secret
+    secrets_env[secret]
+    contains(lower(val[j]), secret)
     msg = sprintf("Line %d: Potential secret in ENV key found: %s", [i, val[j]])
 }
 
@@ -74,13 +75,13 @@ forbidden_users = {
 }
 
 deny[msg] {
-    command := "user"
     users := [name |
 
  input[i].Cmd == "user"; name := input[i].Value]
     lastuser := users[count(users)-1]
-    some k
-    forbidden_users[k] == lower(lastuser)
+    some forbidden
+    forbidden_users[forbidden]
+    forbidden == lower(lastuser)
     msg = sprintf("Line %d: Last USER directive (USER %s) is forbidden", [i, lastuser])
 }
 

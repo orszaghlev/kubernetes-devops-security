@@ -90,5 +90,6 @@ echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 systemctl restart docker
 systemctl restart jenkins
 docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 sonarqube:latest
+docker run --rm -v `pwd`:/host docker.io/aquasec/kube-bench:latest install
 
 echo ".........----------------#################._.-.-COMPLETED-.-._.#################----------------........."

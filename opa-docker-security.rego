@@ -20,7 +20,7 @@ deny[msg] {
     some j
     some k
     contains(lower(val[j]), secrets_env[k])
-    msg = sprintf("Line %d: Potential secret in ENV key found: %s", [i, val])
+    msg = sprintf("Line %d: Potential secret in ENV key found: %s", [i, val[j]])
 }
 
 # Do not use 'latest' tag for base image
@@ -79,9 +79,8 @@ deny[msg] {
 
  input[i].Cmd == "user"; name := input[i].Value]
     lastuser := users[count(users)-1]
-    some j
     some k
-    contains(lower(lastuser[j]), forbidden_users[k])
+    forbidden_users[k] == lower(lastuser)
     msg = sprintf("Line %d: Last USER directive (USER %s) is forbidden", [i, lastuser])
 }
 

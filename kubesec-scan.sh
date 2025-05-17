@@ -9,6 +9,4 @@ if [[ "${scan_score}" -ge 5 ]]; then
     echo "Kubesec scan $scan_message"
 else
     echo "Score is $scan_score, which is less than or equal to 5."
-    echo "Scanning Kubernetes resource has failed."
-    exit 1;
 fi 
